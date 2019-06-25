@@ -1,0 +1,20 @@
+{
+  "name": "instana-graphql-example",
+  "private": true,
+  "dependencies": {
+    "@instana/collector": "^1.69.0",
+    "apollo-link": "^1.2.11",
+    "apollo-link-ws": "^1.0.17",
+    "apollo-server-express": "^2.6.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "graphql": "^14.3.1",
+    "graphql-tools": "^4.0.4",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.5",
+    "winston": "^3.1.0",
+    "ws": "^7.0.0"
+  }
+}
