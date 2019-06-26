@@ -12,10 +12,11 @@ const SubscriptionClient = require('subscriptions-transport-ws')
 const WebSocketLink = require('apollo-link-ws').WebSocketLink;
 const ws = require('ws');
 
+const serverAddress = process.env.SERVER_ADDRESS;
 const serverPort = process.env.SERVER_PORT || 3217;
-const serverBaseUrl = `http://127.0.0.1:${serverPort}`;
+const serverBaseUrl = `http://${serverAddress}:${serverPort}`;
 const serverGraphQLEndpoint = `${serverBaseUrl}/graphql`;
-const serverWsGraphQLUrl = `ws://127.0.0.1:${serverPort}/graphql`;
+const serverWsGraphQLUrl = `ws://${serverAddress}:${serverPort}/graphql`;
 
 const app = express();
 const port = process.env.APP_PORT || 3216;

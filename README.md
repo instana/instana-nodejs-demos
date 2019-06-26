@@ -1,11 +1,58 @@
-Instana GraphQL Example
-=======================
+# Instana GraphQL Demo
 
-A simple example of Instana's GraphQL tracing. Starts a server and a client Node.js app (both instrumented with Instana). The client regularly accesses the server via GraphQL call, randomly executing a query or a mutation.
+This repository contains a demo to test Instana's GraphQL support released with version 157.
 
-1. Start an Instana agent and make sure it is connected to an Instana SAAS environment.
-1. Run `./run.sh`. This will start a server and a client in the background.
-1. The client will wait a few seconds, then start issuing GraphQL calls every 4 seconds, to which the server will respond.
-1. You can find GraphQL calls in Instana easily by going to Analyze and adding a custom filter via "More": `call.graphql.operationType`, `is present`.
-1. If you don't see any GraphQL calls in Instana after, check `server.log` and `client.log`.
-1. The PIDs of server and client will be printed to the console on startup. Once you are done, make sure to `kill` both processes.
+## Prerequisites
+
+- A `docker-compose` installation running on your machine. This demo has been created and tested on Mac OS X with `docker-compose` and `docker-machine`.
+- Access to an Instana tenant v157 or higher.
+
+## Configure
+
+Create a `.env` file in the root of the checked-out version of this repository and enter the following text, with the values adjusted as necessary:
+
+```text
+agent_key=<TODO FILL UP>
+agent_endpoint=<local ip or remote host; e.g., saas-us-west-2.instana.io>
+agent_endpoint_port=<443 already set as default; or 4443 for local>
+agent_zone=<name of the zone for the agent; default: graphql-demo>
+```
+
+## Build
+
+```bash
+docker-compose build
+```
+
+## Launch
+
+```bash
+docker-compose up
+```
+
+This will build and launch:
+
+- A Dockerized Instana agent,
+- the `client-app` Node.js application, which issues a GraphQL query or a mutation against the server every four seconds, and
+- the `server-app` Node.js application, which provides an Apollo-based GraphQL API.
+
+After the agent is bootstrapped and starts accepting spans from the test applications, the results are visible, for example, in the Analyze view when filtering calls and traces via the new call type `GRAPHQL`:
+
+![Service dashboard](images/analyze-technology.png)
+
+Details of the GraphQL queries and mutations are available in the `Call Details` panel of the Trace view, giving insight on:
+
+- What GraphQL operation was executed,
+- which arguments were set, and
+- which fields of which Object Type were selected.
+
+![Trace view and Call details](images/trace-view.png)
+
+Based on the data we collect on GraphQL queries and mutations, the Analyze Calls view has a few interesting tricks, like being able to group calls by:
+
+- Operation types,
+- operation names,
+- object types and their fields, and
+- arguments
+
+![Analyze Calls: GraphQL groups](images/analyze-groups.png)

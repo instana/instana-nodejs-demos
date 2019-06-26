@@ -1,3 +1,2 @@
-/node_modules/
-server.log
-client.log
+node_modules/
+.env
