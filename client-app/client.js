@@ -7,16 +7,11 @@ const rp = require('request-promise');
 const execute = require('apollo-link').execute;
 const express = require('express');
 const morgan = require('morgan');
-const SubscriptionClient = require('subscriptions-transport-ws')
-  .SubscriptionClient;
-const WebSocketLink = require('apollo-link-ws').WebSocketLink;
-const ws = require('ws');
 
-const serverAddress = process.env.SERVER_ADDRESS;
+const serverAddress = process.env.SERVER_ADDRESS || 'localhost';
 const serverPort = process.env.SERVER_PORT || 3217;
 const serverBaseUrl = `http://${serverAddress}:${serverPort}`;
 const serverGraphQLEndpoint = `${serverBaseUrl}/graphql`;
-const serverWsGraphQLUrl = `ws://${serverAddress}:${serverPort}/graphql`;
 
 const app = express();
 const port = process.env.APP_PORT || 3216;
@@ -32,10 +27,10 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.sendStatus(200));
 
-app.get('/find-users-and-orders', (req, res) => runQuery(req, res, 'Users'));
+app.get('/find-users-and-orders', (req, res) => runQuery(res, 'Users'));
 
 app.post('/update-user', (req, res) => {
-  return runUserMutation(req, res, {
+  return runMutation(res, {
     id: 1234,
     name: 'Alicia',
     email: 'alicia@example.com',
@@ -43,37 +38,7 @@ app.post('/update-user', (req, res) => {
   });
 });
 
-app.post('/subscription', (req, res) => establishSubscription(req, res));
-
-app.post('/publish-update-via-http', (req, res) =>
-  rp({
-    method: 'POST',
-    url: `${serverBaseUrl}/publish-update`,
-    body: JSON.stringify({
-      id: req.body.id || 1234,
-      name: 'Alicia',
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => {
-      res.send(response);
-    })
-    .catch(e => {
-      log(e);
-      res.sendStatus(500);
-    }),
-);
-
-app.post('/publish-update-via-graphql', (req, res) =>
-  runMutation(req, res, {
-    id: req.body.id || 1234,
-    name: 'Alicia',
-  }),
-);
-
-function runQuery(req, res) {
+function runQuery(res) {
   const query = `
     query Users {
       Users(email: "*") {
@@ -104,7 +69,7 @@ function runQuery(req, res) {
     });
 }
 
-function runUserMutation(req, res, input) {
+function runMutation(res, input) {
   const mutation = `
     mutation UpdateUser($id: ID!, $name: String, $email: String, $address: String) {
       UpdateUser(input: { id: $id, name: $name, email: $email, address: $address }) {
@@ -135,54 +100,11 @@ function runUserMutation(req, res, input) {
     });
 }
 
-function establishSubscription(req, res) {
-  const subscribeQuery = `
-    subscription onUserUpdated($id: ID!) {
-      OnUserUpdated(id: $id) {
-        id
-        name
-      }
-    }
-  `;
-
-  const subscriptionClient = createSubscriptionObservable(
-    serverWsGraphQLUrl,
-    subscribeQuery,
-    {
-      id: req.query.id || 1234,
-    },
-  );
-  subscriptionClient.subscribe(
-    eventData => {
-      log(`user updated: ${JSON.stringify(eventData)}`);
-    },
-    err => {
-      log(`user updated error: ${JSON.stringify(err)}`);
-    },
-  );
-  res.sendStatus(204);
-}
-
 app.listen(port, () => {
   log(`Listening on port ${port} (downstream server port: ${serverPort}).`);
 });
 
-function createSubscriptionObservable(webSocketUrl, query, variables) {
-  const webSocketClient = new SubscriptionClient(
-    webSocketUrl,
-    {reconnect: true},
-    ws,
-  );
-  const webSocketLink = new WebSocketLink(webSocketClient);
-  return execute(webSocketLink, {
-    query: query,
-    variables: variables,
-  });
-}
-
-setTimeout(() => {
-  startCalls();
-}, 10000);
+setTimeout(startCalls, 10000);
 
 function startCalls() {
   // run some call every five seconds

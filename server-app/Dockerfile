@@ -6,4 +6,4 @@ ADD server.js server.js
 
 RUN npm install
 
-CMD ["node", "server"]
+CMD ["node", "."]

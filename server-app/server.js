@@ -59,40 +59,52 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    Users: () => [
-      {
-        id: 1234,
-        name: 'Alice',
-        email: 'alice@example.com',
-        address: 'Redacted',
-      },
-      {
-        id: 1235,
-        name: 'Bob',
-        email: 'bob@example.com',
-        address: 'Redacted',
-      },
-    ],
-    Orders: () => [
-      {
-        id: 987654321,
-        items: 'Such GraphQL tracing. Much wow',
-      },
-    ],
+    Users: () => {
+      log('Running a query for "Users".');
+      return [
+        {
+          id: 1234,
+          name: 'Alice',
+          email: 'alice@example.com',
+          address: 'Redacted',
+        },
+        {
+          id: 1235,
+          name: 'Bob',
+          email: 'bob@example.com',
+          address: 'Redacted',
+        },
+      ];
+    },
+    Orders: () => {
+      log('Running a query for "Orders".');
+      return [
+        {
+          id: 987654321,
+          items: 'Such GraphQL tracing. Much wow',
+        },
+      ];
+    },
   },
   Mutation: {
     UpdateUser: (root, {input}) => {
+      log('Running a mutation.');
+      log('Notifying subscribers.');
+      pubsub.publish('OnUserUpdated', {
+        OnUserUpdated: input,
+      });
       return {
-        id: 1234,
-        name: 'Alicia',
-        email: 'alicia@example.com',
-        address: 'Redacted',
+        id: input.id,
+        name: input.name,
+        email: input.email,
+        address: input.address,
       };
     },
   },
   Subscription: {
     OnUserUpdated: {
       subscribe: (__, {id}) => {
+        log('Registering a subscription.');
         return pubsub.asyncIterator('OnUserUpdated');
       },
     },

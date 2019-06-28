@@ -1,7 +1,8 @@
 {
-  "name": "instana-graphql-example",
+  "name": "instana-graphql-demo-server",
   "private": true,
   "license": "Apache-2.0",
+  "main": "server.js",
   "dependencies": {
     "@instana/collector": "^1.69.0",
     "apollo-server-express": "^2.6.1",
