@@ -50,7 +50,7 @@ services:
       - agent
       - server-app
 
-  subscriber-app:
+  subscriber-app-1: &subscriber
     build:
       context: ./subscriber-app
     networks:
@@ -62,6 +62,12 @@ services:
     depends_on:
       - agent
       - server-app
+
+  subscriber-app-2: *subscriber
+
+  subscriber-app-3: *subscriber
+
+  subscriber-app-4: *subscriber
 
 networks:
   graphqlmesh: {}
