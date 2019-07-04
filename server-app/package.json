@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "main": "server.js",
   "dependencies": {
-    "@instana/collector": "^1.69.0",
+    "@instana/collector": "^1.69.2",
     "apollo-server-express": "^2.6.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",

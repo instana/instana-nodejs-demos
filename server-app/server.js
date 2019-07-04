@@ -61,6 +61,7 @@ const resolvers = {
   Query: {
     Users: () => {
       log('Running a query for "Users".');
+      maybeSimulateError();
       return [
         {
           id: 1234,
@@ -90,6 +91,7 @@ const resolvers = {
     UpdateUser: (root, {input}) => {
       log('Running a mutation.');
       log('Notifying subscribers.');
+      maybeSimulateError();
       pubsub.publish('OnUserUpdated', {
         OnUserUpdated: input,
       });
@@ -153,6 +155,14 @@ httpServer.listen({port}, () => {
     `Listening on ${port} (HTTP & Websocket), GraphQL endpoint: http://localhost:${port}${server.graphqlPath}`,
   );
 });
+
+function maybeSimulateError() {
+  if (Math.random() < 0.3) {
+    throw new Error(
+      'This GraphQL failed with a simulated error to showcase that Instana captures GraphQL errors nicely.',
+    );
+  }
+}
 
 function log() {
   /* eslint-disable no-console */

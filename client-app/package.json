@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "main": "client.js",
   "dependencies": {
-    "@instana/collector": "^1.69.0",
+    "@instana/collector": "^1.69.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "graphql": "^14.3.1",

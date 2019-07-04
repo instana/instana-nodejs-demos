@@ -53,14 +53,18 @@ function runQuery(res) {
   return rp({
     method: 'POST',
     url: serverGraphQLEndpoint,
-    body: JSON.stringify({
+    json: true,
+    body: {
       query,
-    }),
+    },
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then(response => {
+      if (response.errors && response.errors.length > 0) {
+        return res.status(500).send(response);
+      }
       res.send(response);
     })
     .catch(e => {
@@ -83,15 +87,19 @@ function runMutation(res, input) {
   return rp({
     method: 'POST',
     url: serverGraphQLEndpoint,
-    body: JSON.stringify({
+    json: true,
+    body: {
       query: mutation,
       variables: input,
-    }),
+    },
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then(response => {
+      if (response.errors && response.errors.length > 0) {
+        return res.status(500).send(response);
+      }
       res.send(response);
     })
     .catch(e => {
@@ -107,9 +115,8 @@ app.listen(port, () => {
 setTimeout(startCalls, 10000);
 
 function startCalls() {
-  // run some call every five seconds
+  // Run some call every five seconds...
   setInterval(() => {
-    // http request to ourselves to trigger a GraphQL call.
     let doMutation = false;
     if (Math.random() >= 0.5) {
       doMutation = true;
@@ -121,6 +128,7 @@ function startCalls() {
 
     log(`Triggering a ${doMutation ? 'mutation' : 'query'} (${fullUrl})`);
 
+    // ... by triggering an http request to ourselves which in turn triggers a GraphQL call.
     return rp({
       method: verb,
       url: fullUrl,

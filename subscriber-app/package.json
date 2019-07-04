@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "main": "subscriber.js",
   "dependencies": {
-    "@instana/collector": "^1.69.0",
+    "@instana/collector": "^1.69.2",
     "apollo-link": "^1.2.11",
     "apollo-link-ws": "^1.0.17",
     "express": "^4.16.3",
