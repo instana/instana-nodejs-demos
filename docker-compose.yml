@@ -30,8 +30,10 @@ services:
         aliases:
           - server-app
     environment:
-      - INSTANA_DEV=1
       - INSTANA_AGENT_HOST=agent
+      - INSTANA_EUM_REPORTING_URL=${eum_reporting_url:-https://eum-us-west-2.instana.io}
+      - INSTANA_EUM_KEY=${eum_key}
+      - INSTANA_EUM_PAGE=${eum_page:-instana-graphql-demo-server/GraphiQL Playground}
     expose:
       - "3217"
     ports:

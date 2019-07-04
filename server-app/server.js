@@ -4,6 +4,44 @@
 
 require('@instana/collector')();
 
+// Inject Instana's EUM snippet into GraphiQL playground app:
+const eumReportingUrl =
+  process.env.INSTANA_EUM_REPORTING_URL || 'https://eum-us-west-2.instana.io';
+const eumKey = process.env.INSTANA_EUM_KEY;
+const eumPage =
+  process.env.INSTANA_EUM_PAGE ||
+  'instana-graphql-demo-server/GraphiQL Playground';
+if (eumKey) {
+  const playgroundHtml = require('@apollographql/graphql-playground-html');
+  const originalPlaygroundRenderFunction = playgroundHtml.renderPlaygroundPage;
+  playgroundHtml.renderPlaygroundPage = function() {
+    const html = originalPlaygroundRenderFunction.apply(this, arguments);
+    if (typeof html === 'string') {
+      return html.replace(
+        /<!DOCTYPE html>\s*<html>\s*<head>/i,
+        `<!DOCTYPE html>
+         <html>
+         <head>
+         <script>
+           (function(c,e,f,k,g,h,b,a,d){c[g]||(c[g]=h,b=c[h]=function(){
+           b.q.push(arguments)},b.q=[],b.l=1*new Date,a=e.createElement(f),a.async=1,
+           a.src=k,a.setAttribute("crossorigin", "anonymous"),d=e.getElementsByTagName(f)[0],
+           d.parentNode.insertBefore(a,d))})(window,document,"script",
+           "//eum.instana.io/eum.min.js","InstanaEumObject","ineum");
+           ineum('reportingUrl', '${eumReportingUrl}');
+           ineum('key', '${eumKey}');
+           ineum('page', '${eumPage}');
+         </script>`,
+      );
+    }
+    return html;
+  };
+} else {
+  console.log(
+    "EUM values are not configured, won't inject the EUM snippet into the GraphiQL Playground.",
+  );
+}
+
 const {ApolloServer, gql} = require('apollo-server-express');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -148,6 +186,7 @@ app.post('/publish-update', (req, res) => {
 server.applyMiddleware({app});
 
 const httpServer = http.createServer(app);
+
 server.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({port}, () => {

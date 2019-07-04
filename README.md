@@ -38,9 +38,28 @@ This will build and launch:
 
 After the agent is bootstrapped and starts accepting spans from the test applications, the results are visible, for example, in the Analyze view when filtering calls and traces via the new call type `GRAPHQL`:
 
-## GraphiQL/Playground
+## GraphiQL Playground
 
 In addition to the GraphQL operations that are triggered automatically every few seconds, you can also go to <http://localhost:3217/> to access the server's GraphiQL instance. GraphiQL is a graphical interactive in-browser GraphQL IDE. You can use it to explorer the GraphQL schema and execute queries and updates manually. Naturally, these operations are reported to the configured Instana unit, so you can check out how they are displayed in Instana.
+
+### Configure Website Monitoring for the GraphiQL Playground
+
+You can optionally configure website monitoring for the GraphiQL playground, by adding the following lines to the `.env` file you created earlier:
+
+```
+# optional, default is https://eum-us-west-2.instana.io
+eum_reporting_url=https://eum-us-west-2.instana.io
+
+# optional, but website monitoring will only be enabled if a value is provided
+eum_key=...
+
+# optional, default is "instana-graphql-demo-server/GraphiQL Playground"
+eum_page=instana-graphql-demo-server/GraphiQL Playground
+```
+
+Website monitoring will only be active if a valid `eum_key` is provided and the GraphiQL playground (<http://localhost:3217/>) is accessed in a browser.
+
+## GraphQL Data in Instana
 
 ![Service dashboard](images/analyze-technology.png)
 
