@@ -33,7 +33,9 @@ services:
       - INSTANA_DEV=1
       - INSTANA_AGENT_HOST=agent
     expose:
-      - "8080"
+      - "3217"
+    ports:
+      - "3217:3217"
     depends_on:
       - agent
 

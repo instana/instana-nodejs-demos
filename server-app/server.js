@@ -152,7 +152,7 @@ server.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({port}, () => {
   log(
-    `Listening on ${port} (HTTP & Websocket), GraphQL endpoint: http://localhost:${port}${server.graphqlPath}`,
+    `Listening on ${port} (HTTP & Websocket), GraphQL endpoint: http://localhost:${port}${server.graphqlPath}, GraphiQL explorer also at: http://localhost:${port}${server.graphqlPath}`,
   );
 });
 

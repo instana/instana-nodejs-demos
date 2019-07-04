@@ -38,6 +38,10 @@ This will build and launch:
 
 After the agent is bootstrapped and starts accepting spans from the test applications, the results are visible, for example, in the Analyze view when filtering calls and traces via the new call type `GRAPHQL`:
 
+## GraphiQL/Playground
+
+In addition to the GraphQL operations that are triggered automatically every few seconds, you can also go to <http://localhost:3217/> to access the server's GraphiQL instance. GraphiQL is a graphical interactive in-browser GraphQL IDE. You can use it to explorer the GraphQL schema and execute queries and updates manually. Naturally, these operations are reported to the configured Instana unit, so you can check out how they are displayed in Instana.
+
 ![Service dashboard](images/analyze-technology.png)
 
 Details of the GraphQL queries and mutations are available in the `Call Details` panel of the Trace view, giving insight on:
