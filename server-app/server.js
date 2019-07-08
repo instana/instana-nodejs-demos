@@ -198,7 +198,7 @@ httpServer.listen({port}, () => {
 function maybeSimulateError() {
   if (Math.random() < 0.3) {
     throw new Error(
-      'This GraphQL failed with a simulated error to showcase that Instana captures GraphQL errors nicely.',
+      'This GraphQL call failed with a simulated error to showcase that Instana captures GraphQL errors nicely.',
     );
   }
 }
