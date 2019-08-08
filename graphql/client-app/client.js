@@ -115,7 +115,7 @@ app.listen(port, () => {
 setTimeout(startCalls, 10000);
 
 function startCalls() {
-  // Run some call every five seconds...
+  // Run some call every few seconds...
   setInterval(() => {
     let doMutation = false;
     if (Math.random() >= 0.5) {
