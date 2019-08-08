@@ -1,0 +1,71 @@
+version: '3'
+services:
+
+  agent:
+    image: instana/agent:latest
+    pid: "host"
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev:/dev
+      - /sys:/sys
+      - /var/log:/var/log
+    networks:
+      demomesh:
+        aliases:
+          - instana-agent
+    environment:
+      - INSTANA_AGENT_ENDPOINT=${agent_endpoint:?No agent endpoint provided}
+      - INSTANA_AGENT_ENDPOINT_PORT=${agent_endpoint_port:-443}
+      - INSTANA_AGENT_KEY=${agent_key:?No agent key provided}
+      - INSTANA_DOWNLOAD_KEY=${download_key:-}
+      - INSTANA_AGENT_ZONE=${agent_zone:-graphql-demo}
+    expose:
+      - 42699
+
+  nats-streaming:
+    image: nats-streaming:0.15.1-linux
+    command: -p 4223 -m 8223
+    networks:
+      - demomesh
+    expose:
+      - 4223
+    ports:
+      - 4223:4223
+
+  publisher-app:
+    build:
+      context: ./publisher-app
+    networks:
+      demomesh:
+        aliases:
+          - publisher-app
+    environment:
+      - INSTANA_AGENT_HOST=agent
+      - NATS_HOST=nats-streaming
+      - NATS_PORT=4223
+    expose:
+      - 3216
+    ports:
+      - 3216:3216
+    depends_on:
+      - agent
+      - nats-streaming
+
+  subscriber-app:
+    build:
+      context: ./subscriber-app
+    networks:
+      - demomesh
+    environment:
+      - SERVER_ADDRESS=publisher-app
+      - INSTANA_DEV=1
+      - INSTANA_AGENT_HOST=agent
+      - NATS_HOST=nats-streaming
+      - NATS_PORT=4223
+    depends_on:
+      - agent
+      - nats-streaming
+
+networks:
+  demomesh: {}
