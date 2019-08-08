@@ -1,5 +1,3 @@
-node_modules/
 .env
-server.log
-client.log
-subscriber.log
+node_modules/
+*.log
