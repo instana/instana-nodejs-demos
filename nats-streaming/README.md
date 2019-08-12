@@ -1,5 +1,7 @@
 # Instana NATS Streaming Demo
 
+**DISCLAIMER: Tracing support for NATS Streaming will be published with Instana release 161 (2019-08-27). It also requires a not yet released version of the npm package `@instana/collector`. In the current state of this demo, NATS streaming calls will not be traced.**
+
 This directory contains a demo to test Instana's NATS streaming support released with version 161.
 
 ## Prerequisites
