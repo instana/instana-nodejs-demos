@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "main": "subscriber.js",
   "dependencies": {
-    "@instana/collector": "^1.71.1",
+    "@instana/collector": "^1.72.0",
     "body-parser": "^1.18.3",
     "morgan": "^1.9.1",
     "nats": "^1.3.0",
