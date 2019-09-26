@@ -1,0 +1,56 @@
+version: '3'
+services:
+
+  agent:
+    image: instana/agent:latest
+    pid: "host"
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev:/dev
+      - /sys:/sys
+      - /var/log:/var/log
+    networks:
+      demomesh:
+        aliases:
+          - instana-agent
+    environment:
+      - INSTANA_AGENT_ENDPOINT=${agent_endpoint:?No agent endpoint provided}
+      - INSTANA_AGENT_ENDPOINT_PORT=${agent_endpoint_port:-443}
+      - INSTANA_AGENT_KEY=${agent_key:?No agent key provided}
+      - INSTANA_DOWNLOAD_KEY=${download_key:-}
+      - INSTANA_AGENT_ZONE=${agent_zone:-sdk-demo}
+    expose:
+      - 42699
+
+  receiver-app:
+    build:
+      context: ./receiver-app
+    networks:
+      demomesh:
+        aliases:
+          - receiver-app
+    environment:
+      - INSTANA_AGENT_HOST=agent
+      - BIND_ADDRESS=0.0.0.0
+    expose:
+      - 3216
+    ports:
+      - 3216:3216
+    depends_on:
+      - agent
+
+  sender-app:
+    build:
+      context: ./sender-app
+    networks:
+      demomesh:
+        aliases:
+          - sender-app
+    environment:
+      - DOWNSTREAM_HOST=receiver-app
+    depends_on:
+      - receiver-app
+
+networks:
+  demomesh: {}

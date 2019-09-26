@@ -1,0 +1,6 @@
+{
+  "name": "instana-sdk-sender",
+  "private": true,
+  "license": "Apache-2.0",
+  "main": "sender.js"
+}

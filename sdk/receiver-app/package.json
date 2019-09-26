@@ -1,0 +1,12 @@
+{
+  "name": "instana-sdk-receiver",
+  "private": true,
+  "license": "Apache-2.0",
+  "main": "receiver.js",
+  "dependencies": {
+    "@instana/collector": "^1.72.1",
+    "pino": "^5.13.3",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
