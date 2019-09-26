@@ -1,6 +1,6 @@
 # Instana Node.js SDK Demo
 
-This directory contains a demo to test and showcase Instana's Node.js SDK. It also serves as an example for customers that want to start using the SDK in their own apps.
+This directory contains a demo to test and showcase Instana's [Node.js SDK](https://docs.instana.io/ecosystem/node-js/api/#creating-spans-manually-with-the-sdk). It also serves as an example for customers that want to start using the SDK in their own apps.
 
 ## Prerequisites
 

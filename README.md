@@ -5,6 +5,7 @@ This repository contains demo Node.js apps to showcase tracing support for selec
 - [GraphQL](graphql/README.md)
 - [NATS](nats/README.md)
 - [NATS streaming](nats-streaming/README.md)
+- [Instana Node.js SDK](sdk/README.md)
 
 ## Prerequisites
 
