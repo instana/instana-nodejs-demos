@@ -19,7 +19,7 @@ services:
       - INSTANA_AGENT_ENDPOINT_PORT=${agent_endpoint_port:-443}
       - INSTANA_AGENT_KEY=${agent_key:?No agent key provided}
       - INSTANA_DOWNLOAD_KEY=${download_key:-}
-      - INSTANA_AGENT_ZONE=${agent_zone:-graphql-demo}
+      - INSTANA_AGENT_ZONE=${agent_zone:-nats-demo}
     expose:
       - 42699
 

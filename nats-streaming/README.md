@@ -47,4 +47,4 @@ This will build and launch:
 - the `publisher-app` Node.js application, which sends messages to the NATS streaming server every four seconds, and
 - the `subscriber-app` Node.js application, which consumes those messages from the NATS streaming server.
 
-After the agent is bootstrapped and starts accepting spans from the test applications, the results are visible, for example, in the Analyze view when filtering calls and traces via the call type `MESSAGING`:
+After the agent is bootstrapped and starts accepting spans from the test applications, the results are visible, for example, in the Analyze view when filtering calls and traces via the call type `MESSAGING`.
