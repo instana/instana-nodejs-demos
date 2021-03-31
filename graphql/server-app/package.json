@@ -4,13 +4,13 @@
   "license": "Apache-2.0",
   "main": "server.js",
   "dependencies": {
-    "@instana/collector": "^1.69.2",
-    "apollo-server-express": "^2.14.2",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "graphql": "^14.3.1",
-    "graphql-tools": "^4.0.4",
-    "morgan": "^1.9.1",
-    "ws": "^7.0.0"
+    "@instana/collector": "^1.117.3",
+    "apollo-server-express": "^2.22.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-tools": "^7.0.4",
+    "morgan": "^1.10.0",
+    "ws": "^7.4.4"
   }
 }

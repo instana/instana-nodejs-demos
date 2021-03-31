@@ -4,8 +4,8 @@
   "license": "Apache-2.0",
   "main": "receiver.js",
   "dependencies": {
-    "@instana/collector": "^1.72.1",
-    "pino": "^5.13.3",
+    "@instana/collector": "^1.117.3",
+    "pino": "^6.11.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }
